@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3735311761788447478}
   m_Layer: 0
   m_Name: Ball
-  m_TagString: Untagged
+  m_TagString: Obstacles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -68,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b44b84162352cd84b8d3011061e3295d, type: 2}
+  - {fileID: 2100000, guid: 7e9bba558062825478a0bab0e55702a0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
