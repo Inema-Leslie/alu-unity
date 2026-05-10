@@ -392,6 +392,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4735782282432965865, guid: 726af1394f1ec344f97acbaa66ec9d24, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 7e9bba558062825478a0bab0e55702a0, type: 2}
     - target: {fileID: 6578848427652066541, guid: 726af1394f1ec344f97acbaa66ec9d24, type: 3}
       propertyPath: m_Name
       value: Green Ball
@@ -449,6 +453,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4735782282432965865, guid: 726af1394f1ec344f97acbaa66ec9d24, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: b461f970e6925314e9efb066482b8519, type: 2}
     - target: {fileID: 6578848427652066541, guid: 726af1394f1ec344f97acbaa66ec9d24, type: 3}
       propertyPath: m_Name
       value: Black Ball
@@ -633,6 +641,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4735782282432965865, guid: 726af1394f1ec344f97acbaa66ec9d24, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2f6113beb31d2c94690eb27df6ca818d, type: 2}
     - target: {fileID: 6578848427652066541, guid: 726af1394f1ec344f97acbaa66ec9d24, type: 3}
       propertyPath: m_Name
       value: Red Ball
