@@ -1643,18 +1643,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2030341034546626223, guid: df020ce10d27c8b42beea0499538b39a, type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2030341034546626223, guid: df020ce10d27c8b42beea0499538b39a, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2030341034546626223, guid: df020ce10d27c8b42beea0499538b39a, type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7072375992970278930, guid: df020ce10d27c8b42beea0499538b39a, type: 3}
       propertyPath: m_Name
       value: TimerCanvas
