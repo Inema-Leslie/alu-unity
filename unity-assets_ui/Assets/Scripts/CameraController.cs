@@ -1,40 +1,71 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
     public Transform player;
     public float distance = 5f;
     public float height = 2f;
-    public float mouseSensitivity = 3f;
+    public float mouseSensitivity = 2f;
 
-    private float yaw = 0f;
-    private float pitch = 20f;
-    private PlayerController playerController;
+    private float currentAngleY = 0f;
+    private float currentAngleX = 0f;
 
     void Start()
     {
-        playerController = player.GetComponent<PlayerController>();
+        LockCursor();
+    }
+
+    void Update()
+    {
+        if (Time.timeScale == 0f)
+        {
+            UnlockCursor();
+            return;
+        }
+
+        LockCursor();
+
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+
+        currentAngleY += mouseX;
+
+        if (SettingsData.invertY)
+        {
+            currentAngleX += mouseY;
+        }
+        else
+        {
+            currentAngleX -= mouseY;
+        }
+
+        currentAngleX = Mathf.Clamp(currentAngleX, -20f, 80f);
     }
 
     void LateUpdate()
     {
-        // Smoothly follow player including during respawn
-        bool isRightClickHeld = Input.GetMouseButton(1);
-        bool isFreeLook = !Input.GetMouseButton(1);
+        if (player == null) return;
+        UpdateCameraPosition();
+    }
 
-        if (isFreeLook || isRightClickHeld)
-        {
-            yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
-            pitch -= Input.GetAxis("Mouse Y") * mouseSensitivity;
-            pitch = Mathf.Clamp(pitch, -10f, 60f);
-        }
+    private void UpdateCameraPosition()
+    {
+        Vector3 offset = new Vector3(0, height, -distance);
+        Quaternion rotation = Quaternion.Euler(currentAngleX, currentAngleY, 0);
 
-        // Smoothly follow player position
-        Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
-        Vector3 offset = rotation * new Vector3(0, 0, -distance);
-        Vector3 targetPosition = player.position + Vector3.up * height + offset;
-        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10f);
+        transform.position = player.position + rotation * offset;
+        transform.LookAt(player.position);
+    }
 
-        transform.LookAt(player.position + Vector3.up * 1f);
+    private void LockCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    private void UnlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }

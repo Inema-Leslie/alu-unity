@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b064041c87bd8fb4ba2c21aa4863127e
+guid: fa7aa560a33260548a64deee35a23bf1
 timeCreated: 1459545698
 licenseType: Store
 TextureImporter:
@@ -55,10 +55,3 @@ TextureImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 60004
-  packageName: Farland Skies - Cloudy Crown
-  packageVersion: 1.0
-  assetPath: Assets/FarlandSkies/Skyboxes/CloudyCrown_01_Midday/Textures/CloudyCrown_Midday_Down.png
-  uploadId: 111526

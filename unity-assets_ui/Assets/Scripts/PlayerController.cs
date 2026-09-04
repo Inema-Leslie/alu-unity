@@ -2,61 +2,75 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed = 5f;
+    public float moveSpeed = 6f;
     public float jumpForce = 5f;
-    public float fallThreshold = -10f;  // Y position that triggers reset
-    public Transform spawnPoint;         // Where player respawns
+    public float gravity = -9.81f;
+    public LayerMask groundMask;
+    public float groundCheckDistance = 0.2f;
 
-    private Rigidbody rb;
+    public Vector3 startPosition;
+    public float fallThreshold = -10f;
+    public float respawnHeight = 15f; // how high above start the player falls from
+
+    private Vector3 velocity;
     private bool isGrounded;
-    private Vector3 startPosition;
+    private CharacterController controller;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        startPosition = transform.position; // Save start position
+        controller = GetComponent<CharacterController>();
+        startPosition = transform.position;
     }
 
     void Update()
     {
-        // Movement
-        float moveX = Input.GetAxis("Horizontal");
-        float moveZ = Input.GetAxis("Vertical");
-
-        Vector3 move = new Vector3(moveX, 0, moveZ) * moveSpeed;
-        move.y = rb.linearVelocity.y;
-        rb.linearVelocity = move;
-
-        // Jump
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            isGrounded = false;
-        }
-
-        // Check if player has fallen too far
+        // Check if player fell off the level
         if (transform.position.y < fallThreshold)
         {
-            RespawnPlayer();
+            Respawn();
         }
+
+        GroundCheck();
+
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+        Vector3 move = new Vector3(horizontal, 0f, vertical);
+
+        controller.Move(move * moveSpeed * Time.deltaTime);
+
+        HandleJump();
+
+        controller.Move(velocity * Time.deltaTime);
     }
 
-    void RespawnPlayer()
+    private void HandleJump()
     {
-        // Stop all movement
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
+        if (isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2f;
+        }
 
-        // Move player high above start so it falls down dramatically
-        transform.position = new Vector3(
-            startPosition.x,
-            startPosition.y + 20f,  // Drop from above
-            startPosition.z
-        );
+        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
+        {
+            velocity.y = jumpForce;
+        }
+
+        velocity.y += gravity * Time.deltaTime;
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void GroundCheck()
     {
-        isGrounded = true;
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundMask);
+    }
+
+    private void Respawn()
+    {
+        // Spawn above the start position
+        Vector3 respawnPosition = startPosition + Vector3.up * respawnHeight;
+        controller.enabled = false;          // avoid CharacterController glitch
+        transform.position = respawnPosition;
+        controller.enabled = true;
+
+        velocity = Vector3.zero;
     }
 }

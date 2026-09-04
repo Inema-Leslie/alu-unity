@@ -1,33 +1,67 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class Timer : MonoBehaviour
 {
-    public Text TimerText;
+    public Text timerText; // Reference to the UI Text component
     private float elapsedTime = 0f;
-    private bool isRunning = false;
+    private bool isRunning = true; // NEW: flag to stop the timer
+    private Coroutine timerCoroutine;
 
-    void Update()
+    void Start()
     {
-        if (isRunning)
+        timerText.text = FormatTime(elapsedTime);
+        timerCoroutine = StartCoroutine(UpdateTimer());
+    }
+
+    private IEnumerator UpdateTimer()
+    {
+        while (isRunning) // <- Use the flag instead of "while(true)"
         {
-            elapsedTime += Time.deltaTime;
-            UpdateTimerDisplay();
+            yield return new WaitForSeconds(0.1f);
+            elapsedTime += 0.1f;
+            timerText.text = FormatTime(elapsedTime);
         }
     }
 
-    public void StartTimer()
+    private string FormatTime(float time)
     {
-        isRunning = true;
+        int minutes = Mathf.FloorToInt(time / 60);
+        float seconds = time % 60;
+        return string.Format("{0:00}:{1:00.00}", minutes, seconds);
     }
 
-    void UpdateTimerDisplay()
+    // Call this method to stop the timer
+    public void StopTimer()
     {
-        int minutes = Mathf.FloorToInt(elapsedTime / 60f);
-        int seconds = Mathf.FloorToInt(elapsedTime % 60f);
-        float hundredths = (elapsedTime % 1f) * 100f;
+        isRunning = false;
+        if (timerCoroutine != null)
+        {
+            StopCoroutine(timerCoroutine);
+        }
+    }
 
-        TimerText.text = string.Format("{0}:{1:00}.{2:00}",
-            minutes, seconds, Mathf.FloorToInt(hundredths));
+    public void Win()
+    {
+        StopTimer();
+
+        // Find WinCanvas FinalTime text
+        GameObject winCanvas = GameObject.Find("WinCanvas");
+
+        if (winCanvas != null)
+        {
+            Transform finalTimeObj = winCanvas.transform.Find("FinalTime");
+
+            if (finalTimeObj != null)
+            {
+                UnityEngine.UI.Text finalText = finalTimeObj.GetComponent<UnityEngine.UI.Text>();
+
+                if (finalText != null)
+                {
+                    finalText.text = "Final Time: " + timerText.text;
+                }
+            }
+        }
     }
 }
